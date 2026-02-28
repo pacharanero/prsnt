@@ -1,0 +1,20 @@
+{
+  "name": "prsnt-workspace",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "app",
+    "server"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w app",
+    "dev:all": "concurrently -k \"npm run dev -w app\" \"npm run dev -w server\"",
+    "build": "npm run build -w app",
+    "preview": "npm run preview -w app",
+    "server": "npm run dev -w server",
+    "publish:presentation": "npm run publish:presentation -w app"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.0"
+  }
+}

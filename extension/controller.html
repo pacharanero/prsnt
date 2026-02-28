@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prsnt Controller</title>
+    <link rel="stylesheet" href="controller.css" />
+  </head>
+  <body>
+    <main class="panel wide">
+      <h1>Prsnt Controller</h1>
+      <p class="hint">One URL per line. Reorder slides by dragging Chrome tabs in the deck window.</p>
+
+      <section class="row">
+        <label for="sourceName">Source Name</label>
+        <input id="sourceName" type="text" placeholder="talk-name" />
+      </section>
+
+      <section class="row actions">
+        <input id="fileInput" type="file" accept="text/plain,.txt" />
+        <button id="openPickerBtn">Open File Picker</button>
+        <button id="saveBackBtn">Save Back</button>
+      </section>
+
+      <section class="row">
+        <textarea id="urlsInput" placeholder="https://example.com\nhttps://developer.mozilla.org"></textarea>
+      </section>
+
+      <section class="row actions">
+        <button id="storeBtn">Store URLs</button>
+        <button id="openDeckBtn">Open Deck Window</button>
+        <button id="captureDeckBtn">Capture Deck Tabs</button>
+        <button id="captureCurrentBtn">Capture Current Window</button>
+      </section>
+
+      <section class="row actions">
+        <button id="prevBtn">Prev</button>
+        <button id="nextBtn">Next</button>
+        <button id="focusBtn">Focus Deck</button>
+      </section>
+
+      <section class="row actions">
+        <button id="exportBtn">Export .txt</button>
+        <input id="filenameInput" type="text" value="presentation.txt" />
+      </section>
+
+      <section class="row">
+        <pre id="status" class="status">Ready.</pre>
+      </section>
+    </main>
+
+    <script src="controller.js"></script>
+  </body>
+</html>

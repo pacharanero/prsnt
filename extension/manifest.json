@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "Prsnt Tabs",
+  "description": "URL presentation decks as native Chrome tabs.",
+  "version": "0.1.0",
+  "permissions": ["tabs", "storage", "downloads", "commands"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Prsnt Tabs",
+    "default_popup": "popup.html"
+  },
+  "options_page": "controller.html",
+  "commands": {
+    "next-slide": {
+      "suggested_key": {
+        "default": "Alt+Shift+Right"
+      },
+      "description": "Go to next slide tab"
+    },
+    "prev-slide": {
+      "suggested_key": {
+        "default": "Alt+Shift+Left"
+      },
+      "description": "Go to previous slide tab"
+    }
+  }
+}

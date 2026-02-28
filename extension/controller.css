@@ -1,0 +1,95 @@
+:root {
+  font-family: "Segoe UI", Roboto, system-ui, sans-serif;
+  color: #1d2733;
+  background: linear-gradient(160deg, #f4f8ff 0%, #ecf2ff 45%, #f7f9fc 100%);
+}
+
+body {
+  margin: 0;
+}
+
+.panel {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.panel.wide {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+h1 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.hint {
+  margin: 0;
+  color: #40586e;
+  font-size: 0.9rem;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.row.actions {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+label {
+  font-size: 0.9rem;
+  color: #32495f;
+}
+
+input,
+textarea,
+button,
+pre {
+  border: 1px solid #aac0dd;
+  border-radius: 7px;
+  font-size: 0.95rem;
+}
+
+input,
+textarea {
+  padding: 8px;
+  background: #fff;
+}
+
+textarea {
+  min-height: 260px;
+  resize: vertical;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+button {
+  background: #eef5ff;
+  color: #1d3655;
+  padding: 8px 10px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #e2eeff;
+}
+
+.status {
+  white-space: pre-wrap;
+  margin: 0;
+  padding: 10px;
+  background: #fefefe;
+  color: #30485f;
+  min-height: 48px;
+}
+
+@media (max-width: 700px) {
+  .row.actions {
+    flex-direction: column;
+  }
+}

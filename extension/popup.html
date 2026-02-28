@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prsnt</title>
+    <link rel="stylesheet" href="controller.css" />
+    <style>
+      body {
+        min-width: 320px;
+      }
+      .popup-actions {
+        display: flex;
+        gap: 8px;
+      }
+      .popup-actions button {
+        flex: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="panel">
+      <h1>Prsnt</h1>
+      <p id="status" class="status">Checking status...</p>
+      <div class="popup-actions">
+        <button id="prevBtn">Prev</button>
+        <button id="nextBtn">Next</button>
+      </div>
+      <button id="focusBtn">Focus Deck</button>
+      <button id="openControllerBtn">Open Controller</button>
+      <p class="hint">Shortcuts can be customized at chrome://extensions/shortcuts</p>
+    </main>
+    <script src="popup.js"></script>
+  </body>
+</html>
