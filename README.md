@@ -24,6 +24,12 @@ Prsnt is now a Chrome extension for URL-based presentations using native tabs.
    - `Export .txt` (download)
    - `Save Back` (if File System Access API handle is active)
 
+## Quick Open From Selection
+
+1. Highlight text on any web page that contains one or more URLs.
+2. Right-click and choose `Open selected URLs in Prsnt deck`.
+3. Prsnt extracts links from the selected text and opens them in a new deck window as tabs.
+
 ## Notes
 
 - This avoids iframe embed blocking because each slide is a top-level browser tab.

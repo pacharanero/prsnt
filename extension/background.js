@@ -5,6 +5,9 @@ const KEYS = {
   UPDATED_AT: 'prsnt.updatedAt',
 };
 
+const CONTEXT_MENU_ID = 'prsnt.openSelectionUrls';
+const URL_MATCH_RE = /(?:https?:\/\/|www\.)[^\s<>"'`]+|(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,}(?:\/[^\s<>"'`]*)?/gi;
+
 function parseUrlsFromText(text) {
   return text
     .split(/\r?\n/)
@@ -12,20 +15,70 @@ function parseUrlsFromText(text) {
     .filter(Boolean);
 }
 
+function trimUrlCandidate(raw) {
+  let value = (raw || '').trim();
+  if (!value) {
+    return '';
+  }
+
+  value = value.replace(/^[({[<"'`]+/, '');
+  value = value.replace(/[)\]}>"'`]+$/, '');
+
+  while (/[.,!?;:]$/.test(value)) {
+    value = value.slice(0, -1);
+  }
+
+  if (value.endsWith(')') && !value.includes('(')) {
+    value = value.slice(0, -1);
+  }
+
+  return value.trim();
+}
+
 function normalizeUrl(raw) {
-  const trimmed = (raw || '').trim();
+  const trimmed = trimUrlCandidate(raw);
   if (!trimmed) {
     return '';
   }
   try {
     const parsed = new URL(trimmed);
     if (parsed.protocol) {
-      return trimmed;
+      return parsed.href;
     }
   } catch (error) {
     // Continue to https fallback.
   }
   return `https://${trimmed}`;
+}
+
+function parseUrlsFromSelection(text) {
+  const candidates = (text || '').match(URL_MATCH_RE) || [];
+  const seen = new Set();
+  const urls = [];
+
+  for (const candidate of candidates) {
+    const normalized = normalizeUrl(candidate);
+    if (!normalized || !isTabUrlPresentable(normalized)) {
+      continue;
+    }
+
+    try {
+      const parsed = new URL(normalized);
+      if (!/^https?:$/i.test(parsed.protocol)) {
+        continue;
+      }
+      const href = parsed.href;
+      if (seen.has(href)) {
+        continue;
+      }
+      seen.add(href);
+      urls.push(href);
+    } catch (error) {
+      // Ignore values that still fail URL parsing.
+    }
+  }
+
+  return urls;
 }
 
 function isTabUrlPresentable(url) {
@@ -255,6 +308,51 @@ async function getUrls() {
     updatedAt: data[KEYS.UPDATED_AT] || null,
   };
 }
+
+async function ensureContextMenu() {
+  await chrome.contextMenus.removeAll();
+  chrome.contextMenus.create({
+    id: CONTEXT_MENU_ID,
+    title: 'Open selected URLs in Prsnt deck',
+    contexts: ['selection'],
+  });
+}
+
+chrome.runtime.onInstalled.addListener(() => {
+  ensureContextMenu().catch(() => {
+    // Ignore setup errors; extension can still run core actions.
+  });
+});
+
+chrome.runtime.onStartup.addListener(() => {
+  ensureContextMenu().catch(() => {
+    // Ignore setup errors; extension can still run core actions.
+  });
+});
+
+ensureContextMenu().catch(() => {
+  // Ignore setup errors; extension can still run core actions.
+});
+
+chrome.contextMenus.onClicked.addListener((info, tab) => {
+  if (info.menuItemId !== CONTEXT_MENU_ID) {
+    return;
+  }
+
+  (async () => {
+    const urls = parseUrlsFromSelection(info.selectionText || '');
+    if (!urls.length) {
+      return;
+    }
+
+    await openDeck({
+      urls,
+      sourceName: tab?.title ? `Selection from ${tab.title}` : 'Selection',
+    });
+  })().catch(() => {
+    // Swallow errors because context-menu clicks are fire-and-forget.
+  });
+});
 
 chrome.tabs.onRemoved.addListener(async (tabId, removeInfo) => {
   const deckWindowId = await getDeckWindowId();

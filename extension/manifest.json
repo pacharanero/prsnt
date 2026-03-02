@@ -3,7 +3,13 @@
   "name": "Prsnt Tabs",
   "description": "URL presentation decks as native Chrome tabs.",
   "version": "0.1.0",
-  "permissions": ["tabs", "storage", "downloads", "commands"],
+  "permissions": [
+    "tabs",
+    "storage",
+    "downloads",
+    "commands",
+    "contextMenus"
+  ],
   "background": {
     "service_worker": "background.js"
   },
